@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity(), OnSeekBarChangeListener {
     private var renderer: SimpleRenderer? = null
     private var cube: Cube? = null
     private var pyramid: Pyramid? = null
+    private var angle = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,17 @@ class MainActivity : AppCompatActivity(), OnSeekBarChangeListener {
         renderer!!.setObj(cube)
         glView!!.setRenderer(renderer)
 
+        //X, Y方向に一定間隔で一定角度ずつ回転させる。
+        val timer = Timer(false)
+        val task: TimerTask = object : TimerTask() {
+            override fun run() {
+                angle += 10
+                angle %= 360
+                seekBarX.progress = angle
+                seekBarY.progress = angle
+            }
+        }
+        timer.schedule(task, 0, 100)
     }
 
     override fun onResume() {
